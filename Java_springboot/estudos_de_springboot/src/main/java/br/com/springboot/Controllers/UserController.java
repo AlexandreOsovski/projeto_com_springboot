@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.springboot.repository.UserRepository;
+import br.com.springboot.Model.User;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import br.com.springboot.Model.User;
 
 
 
@@ -20,6 +23,9 @@ import br.com.springboot.Model.User;
 public class UserController {
 
     private List<User> users = new ArrayList<>();
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/{id}")
     public User user(@PathVariable("id") Long Id) {
@@ -32,8 +38,7 @@ public class UserController {
 
     @PostMapping("/")
     public User user(@RequestBody User user) {
-        users.add(user);
-        return user;
+        return this.userRepository.save(user); ;
     }
 
     @GetMapping("/List")
